@@ -81,10 +81,16 @@ class UrlLauncher {
           WebViewActivity.createIntent(
               activity, url, enableJavaScript, enableDomStorage, headersBundle);
     } else {
-      launchIntent =
-          new Intent(Intent.ACTION_VIEW)
-              .setData(Uri.parse(url))
-              .putExtra(Browser.EXTRA_HEADERS, headersBundle);
+      if (url.contains("connectsecapp")) {
+        launchIntent = new Intent(Intent.ACTION_VIEW)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .setData(Uri.parse(url))
+                .putExtra(Browser.EXTRA_HEADERS, headersBundle);
+      } else {
+        launchIntent = new Intent(Intent.ACTION_VIEW)
+                .setData(Uri.parse(url))
+                .putExtra(Browser.EXTRA_HEADERS, headersBundle);
+      }
     }
 
     try {
