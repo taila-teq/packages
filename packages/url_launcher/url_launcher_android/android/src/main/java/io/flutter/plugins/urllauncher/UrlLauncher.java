@@ -81,10 +81,19 @@ final class UrlLauncher implements UrlLauncherApi {
     ensureActivity();
     assert activity != null;
 
-    Intent launchIntent =
-        new Intent(Intent.ACTION_VIEW)
-            .setData(Uri.parse(url))
-            .putExtra(Browser.EXTRA_HEADERS, extractBundle(headers));
+    Intent launchIntent;
+
+    if (url.contains("connectsecapp")) {
+      launchIntent = new Intent(Intent.ACTION_VIEW)
+              .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+              .setData(Uri.parse(url))
+              .putExtra(Browser.EXTRA_HEADERS, extractBundle(headers));
+    } else {
+      launchIntent = new Intent(Intent.ACTION_VIEW)
+              .setData(Uri.parse(url))
+              .putExtra(Browser.EXTRA_HEADERS, extractBundle(headers));
+    }
+
     try {
       activity.startActivity(launchIntent);
     } catch (ActivityNotFoundException e) {
